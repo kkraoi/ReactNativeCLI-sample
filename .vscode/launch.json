@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to Android (Hermes)",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnativedirect",
+            "request": "attach"
+        },
+        {
+            "name": "Launch on Android Emulator",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnativedirect",
+            "request": "launch",
+            "platform": "android",
+            "target": "Pixel_9a_2"
+        },
+        {
+            "name": "Launch on Android Device",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnativedirect",
+            "request": "launch",
+            "platform": "android",
+            "target": "device"
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外部アセットHTML</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #e9ecef; text-align: center; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button { padding: 12px 24px; font-size: 16px; border: none; border-radius: 5px; color: white; margin: 10px 0; width: 100%; }
+        .btn-alert { background-color: #dc3545; }
+        .btn-scan { background-color: #007bff; }
+        #status-display { margin-top: 15px; padding: 10px; background: #f8f9fa; border: 1px solid #ccc; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h3>📦 荷物仕分けシステム (Asset版)</h3>
+        <p>HTMLファイルからネイティブを呼び出します</p>
+
+        <button class="btn-scan" onclick="requestScan()">バーコード操作要求</button>
+        <button class="btn-alert" onclick="sendError()">バーコード操作要求</button>
+
+        <div id="status-display">RNからの指示待ち...</div>
+    </div>
+
+    <script>
+        // 1. RNへ「スキャンして！」と要求する
+        function requestScan() {
+            const msg = { 
+                type: "REQUEST_SCAN",
+                payload: {
+                    userId: "USER-01"
+                }
+            }
+
+            window.ReactNativeWebView.postMessage(JSON.stringify(msg));
+        }
+
+        // 2. RNへ「エラー起きた！」と通報する
+        function sendError() {
+            const msg = { type: 'ALERT_ERROR', payload: { code: 'E-404', detail: 'コンベア停止' } };
+            window.ReactNativeWebView.postMessage(JSON.stringify(msg));
+        }
+ 
+        // 3. RNからのコマンド（injectJavaScript）を受け取るリスナー
+        window.addEventListener("message", function(event) {
+            const display = document.getElementById("status-display");
+            display.innerText = "【RN受信】" + event.data;
+            display.style.color = "green";
+        })
+    </script>
+</body>
+</html>

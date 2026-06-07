@@ -95,3 +95,12 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+## 環境
+- windows11pro
+- JDK：17
+- Node.js：v22.22.3
+- Android Studio
+    - Android SDK Platform 35
+    - Intel x86 Atom_64 System Image
+    - 36.0.0Android SDK Command-line Tools (latest)

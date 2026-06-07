@@ -1,0 +1,5 @@
+# local.properties.example (これはgitにコミットして共有する)
+# このファイルを 'local.properties' にコピーし、本物の値を埋めてください。
+RELEASE_STORE_PASSWORD=ここにパスワード
+RELEASE_KEY_PASSWORD=ここにパスワード
+RELEASE_KEY_ALIAS=ここにエイリアス名

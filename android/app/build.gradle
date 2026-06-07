@@ -2,6 +2,24 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+    if (localProperties.getProperty('RELEASE_STORE_PASSWORD') == null) {
+        throw new GradleException(
+            "🛑 [Error] 'local.properties' は存在しますが、リリース用の設定（RELEASE_STORE_PASSWORDなど）が足りません。"
+        )
+    }
+} else {
+    throw new GradleException(
+        "🛑 [Error] 'local.properties' ファイルが見つかりません。\n" +
+        "プロジェクトのルートディレクトリに 'local.properties' を作成し、必要なリリース署名情報を設定してください。"
+    )
+}
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -92,6 +110,15 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+
+        release {
+            if (localProperties.getProperty("RELEASE_STORE_PASSWORD") != null) {
+                storeFile file("testapp.keystore")
+                storePassword localProperties.getProperty('RELEASE_STORE_PASSWORD')
+                keyAlias localProperties.getProperty('RELEASE_KEY_ALIAS')
+                keyPassword localProperties.getProperty('RELEASE_KEY_PASSWORD')
+            }
+        }
     }
     buildTypes {
         debug {
@@ -100,7 +127,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

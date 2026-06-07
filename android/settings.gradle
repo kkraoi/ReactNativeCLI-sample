@@ -4,3 +4,17 @@ extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autoli
 rootProject.name = 'testapp'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
+
+// Windows: Nitro 系ネイティブモジュールの .cxx を短いパスへ（パス長 250 文字制限回避）
+// beforeProject で afterEvaluate を登録しないと、RN rootproject 適用後は
+// 「already evaluated」エラーになる
+gradle.beforeProject { project ->
+    project.afterEvaluate {
+        if (project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
+            def cmake = project.extensions.findByName("android")?.externalNativeBuild?.cmake
+            if (cmake != null) {
+                cmake.buildStagingDirectory = new File("C:/cxx/${project.name}")
+            }
+        }
+    }
+}
